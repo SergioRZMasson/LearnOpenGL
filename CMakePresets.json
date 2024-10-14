@@ -1,0 +1,58 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 20,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "windows-base",
+            "displayName": "Windows Build",
+            "description": "Base windows build.",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/build/",
+            "architecture": {
+                "value": "x64",
+                "strategy": "set"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "windows",
+            "displayName": "Windows Build",
+            "description": "Build all windows binaries.",
+            "inherits": [
+                "windows-base"
+            ],
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": {
+                    "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                    "type": "FILEPATH"
+                }
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "windows-release",
+            "configurePreset": "windows",
+            "configuration": "Release",
+            "targets": [
+                "install"
+            ]
+        },
+        {
+            "name": "windows-debug",
+            "configurePreset": "windows",
+            "configuration": "Debug",
+            "targets": [
+                "install"
+            ]
+        }
+    ]
+}
